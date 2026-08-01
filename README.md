@@ -7,15 +7,15 @@
 
 ## 📖 Overview
 
-This project demonstrates a **fully automated CI/CD pipeline** that builds, tests, and deploys a Python Flask application to AWS EC2. The entire infrastructure is provisioned using **Infrastructure as Code (IaC)** with Terraform, containerized with Docker, and orchestrated by Jenkins.
+This project demonstrates a **fully automated CI/CD pipeline** that builds and deploys a Python Flask application to AWS EC2. The entire infrastructure is provisioned using **Infrastructure as Code (IaC)** with Terraform, containerized with Docker, and orchestrated by Jenkins.
 
 ### 🎯 Key Features
 
-- ✅ Automated builds triggered by GitHub pushes
-- ✅ Docker containerization for consistent deployments
-- ✅ Infrastructure as Code with Terraform
-- ✅ AWS EC2 deployment
-- ✅ Zero cost infrastructure
+- ✅ **Automated Pipeline** – Jenkins orchestrates the entire CI/CD workflow
+- ✅ **Continuous Integration** – Code is built and containerized on every build
+- ✅ **Continuous Deployment** – Application is deployed to AWS EC2
+- ✅ **GitOps** – Everything is defined in code (Infrastructure as Code)
+- ✅ **Free Tier** – All AWS resources within free tier limits
 
 ## 🛠️ Technology Stack
 
@@ -29,11 +29,13 @@ This project demonstrates a **fully automated CI/CD pipeline** that builds, test
 | **Application** | Python Flask |
 | **Version Control** | GitHub |
 
-## Screenshots
-<img width="1918" height="1012" alt="image" src="https://github.com/user-attachments/assets/d66de0c5-a4ab-453d-a55d-8c1dc32d915d" />
-<img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/e9d2df0c-c5fe-4ab0-bf7b-eea88fa85458" />
-<img width="1918" height="1022" alt="image" src="https://github.com/user-attachments/assets/c7aaf243-c08b-43eb-9fab-5376fe8914a6" />
+## 📸 Screenshots
 
+<img width="1918" height="1012" alt="Jenkins Pipeline" src="https://github.com/user-attachments/assets/d66de0c5-a4ab-453d-a55d-8c1dc32d915d" />
+
+<img width="1918" height="1017" alt="Terraform Apply" src="https://github.com/user-attachments/assets/e9d2df0c-c5fe-4ab0-bf7b-eea88fa85458" />
+
+<img width="1918" height="1022" alt="Live Application" src="https://github.com/user-attachments/assets/c7aaf243-c08b-43eb-9fab-5376fe8914a6" />
 
 ## 📁 Project Structure
 
@@ -68,14 +70,12 @@ python-app-pipeline/
 ### Pipeline Flow
 
 ```
-GitHub Push → Jenkins Trigger → Build Docker Image → Push to Docker Hub → Terraform Apply → EC2 Running → App Live
+Jenkins Build (Manual) → Git Clone → Build Docker Image → Push Docker Hub → Terraform Apply → EC2 Running → App Live
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-Before you begin, ensure you have the following installed:
 
 | Tool | Purpose | Installation Link |
 |:---|:---|:---|
@@ -89,13 +89,11 @@ Before you begin, ensure you have the following installed:
 ### AWS Account Setup
 
 **1. Create an IAM User**
-
 - Go to AWS Console → IAM → Users → Create user
 - Username: `jenkins-user`
 - Attach policies: `AmazonEC2FullAccess`, `IAMFullAccess`
 
 **2. Generate Access Keys**
-
 - Click on the user → Security credentials → Create access key
 - Copy and save:
   - `Access Key ID`
@@ -103,7 +101,6 @@ Before you begin, ensure you have the following installed:
 - ⚠️ **Never share these keys publicly!**
 
 **3. Create a Key Pair (Optional for SSH)**
-
 - EC2 → Key Pairs → Create key pair
 - Download the `.pem` file for SSH access
 
@@ -131,44 +128,32 @@ java -jar jenkins.war --httpPort=8080
 #### 3. Configure Jenkins Credentials
 
 **Add Docker Hub Credentials:**
-
-1. Jenkins Dashboard → Manage Jenkins → Credentials
-2. System → Global credentials → Add Credentials
-3. **Kind:** `Username with password`
-4. **Username:** Your Docker Hub username
-5. **Password:** Your Docker Hub password (or access token)
-6. **ID:** `dockerhub-creds`
-7. Click **Create**
+- **Kind:** `Username with password`
+- **Username:** Your Docker Hub username
+- **Password:** Your Docker Hub password
+- **ID:** `dockerhub-creds`
 
 **Add AWS Credentials:**
-
-1. Add Credentials again
-2. **Kind:** `AWS Credentials`
-3. **Access Key ID:** Your AWS access key
-4. **Secret Key:** Your AWS secret key
-5. **ID:** `aws-creds`
-6. Click **Create**
+- **Kind:** `AWS Credentials`
+- **Access Key ID:** Your AWS access key
+- **Secret Key:** Your AWS secret key
+- **ID:** `aws-creds`
 
 #### 4. Create Jenkins Pipeline Job
 
 1. Jenkins Dashboard → New Item
 2. **Name:** `python-app-pipeline`
 3. **Type:** `Pipeline`
-4. Click **OK**
-5. Scroll to **Pipeline** section
-6. **Definition:** `Pipeline script from SCM`
-7. **SCM:** `Git`
-8. **Repository URL:** `https://github.com/BhathiyaVicum/python-app-pipeline.git`
-9. **Branch:** `main`
-10. **Script Path:** `Jenkinsfile`
-11. Click **Save**
+4. **Definition:** `Pipeline script from SCM`
+5. **SCM:** `Git`
+6. **Repository URL:** `https://github.com/BhathiyaVicum/python-app-pipeline.git`
+7. **Branch:** `main`
+8. **Script Path:** `Jenkinsfile`
 
 #### 5. Run the Pipeline
 
-1. Go to your pipeline job
-2. Click **Build Now**
-3. Watch the console output
-4. Once complete, the application URL will be displayed:
+1. Click **Build Now**
+2. Once complete, the application URL will be displayed:
 
 ```bash
 =========================================
@@ -185,16 +170,12 @@ Open your browser and visit:
 http://<EC2-PUBLIC-IP>:5000
 ```
 
-You should see the Flask application running! 🎉
-
 ## 🧪 Testing the Application
 
 ### Verify Locally on EC2
 
-SSH into EC2 and test:
-
 ```bash
-# SSH into EC2 (if you have key pair)
+# SSH into EC2
 ssh -i your-key.pem ec2-user@<EC2-PUBLIC-IP>
 
 # Check running containers
@@ -207,37 +188,20 @@ curl http://localhost:5000
 docker logs my-app
 ```
 
-## 💰 Cost Breakdown
-
-| Service | Resource | Free Tier Limit | Monthly Cost |
-|:---|:---|:---|:---|
-| AWS EC2 | t2.micro | 750 hours/month | **$0.00** |
-| AWS Data Transfer | Inbound | 1 GB/month | **$0.00** |
-| Docker Hub | Public repository | Unlimited | **Free** |
-| Jenkins | Local installation | Unlimited | **Free** |
-| Terraform | CLI tool | Unlimited | **Free** |
-| GitHub | Public repository | Unlimited | **Free** |
-
-**Total: $0.00/month** 🎉
-
 ## 🔧 Troubleshooting
-
-### Common Issues & Solutions
 
 | Issue | Solution |
 |:---|:---|
 | **Docker Permission Denied** | `sudo usermod -aG docker $USER && exit` |
-| **Jenkins Can't Connect to Docker** | Run Jenkins as Administrator (Windows) or add to docker group (Linux) |
-| **EC2 Not Accessible on Port 5000** | Check Security Group inbound rules in AWS Console |
-| **Terraform Apply Fails** | Verify AWS credentials and IAM permissions |
-| **Container Not Starting** | SSH to EC2 and check: `docker logs my-app` |
-| **Docker Image Not Found** | Verify image exists: `docker pull bhathiyavi/python-app-2:v1` |
-| **user_data.sh Not Running** | Check logs: `sudo cat /var/log/cloud-init-output.log` |
+| **Jenkins Can't Connect to Docker** | Run Jenkins as Administrator |
+| **EC2 Not Accessible** | Check Security Group inbound rules |
+| **Terraform Apply Fails** | Verify AWS credentials |
+| **Container Not Starting** | SSH to EC2: `docker logs my-app` |
+| **user_data.sh Not Running** | `sudo cat /var/log/cloud-init-output.log` |
 
 ### Debugging EC2
 
 ```bash
-# SSH into EC2
 ssh -i your-key.pem ec2-user@<EC2-PUBLIC-IP>
 
 # Check Docker status
@@ -252,9 +216,6 @@ docker logs my-app
 # Check user_data execution
 sudo cat /var/log/cloud-init-output.log
 
-# Check if user_data ran
-sudo cat /var/lib/cloud/instance/user-data.txt
-
 # Test application locally
 curl http://localhost:5000
 ```
@@ -267,6 +228,11 @@ curl http://localhost:5000
 - ✅ **Cloud Automation** – AWS resource provisioning
 - ✅ **DevOps Best Practices** – Security, automation, and cost optimization
 - ✅ **Pipeline as Code** – Declarative Jenkinsfile syntax
+
+---
+
+⭐ Star this repository if you found it helpful!
+
 ## 📊 Project Status
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/BhathiyaVicum/python-app-pipeline)](https://github.com/BhathiyaVicum/python-app-pipeline)
