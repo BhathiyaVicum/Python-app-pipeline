@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = 'bhathiyavi'
+        DOCKERHUB_REPO = 'python-app-2'
         IMAGE_TAG = 'v1'
     }
 
@@ -57,6 +58,7 @@ pipeline {
                             terraform init
                             terraform apply -auto-approve \
                                 -var="docker_hub_username=${DOCKERHUB_USER}" \
+                                -var="docker_hub_repo=${DOCKERHUB_REPO}" \
                                 -var="image_tag=${IMAGE_TAG}"
                         '''
                     }
