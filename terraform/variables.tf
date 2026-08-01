@@ -14,3 +14,9 @@ variable "image_tag" {
   type        = string
   default     = "latest"
 }
+
+variable "docker_hub_repo" {
+  description = "Docker Hub repository name"
+  type        = string
+  default     = "python-app-2"
+}

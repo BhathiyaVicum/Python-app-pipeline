@@ -32,6 +32,7 @@ resource "aws_instance" "web_server" {
 
   user_data = templatefile("${path.module}/user_data.sh", {
     docker_hub_username = var.docker_hub_username
+    docker_hub_repo     = var.docker_hub_repo
     image_tag           = var.image_tag
   })
 

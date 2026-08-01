@@ -5,6 +5,9 @@ yum install -y docker git
 systemctl start docker
 systemctl enable docker
 
+# Add ec2-user to docker group
+usermod -aG docker ec2-user
+
 # Pull the Docker image from Docker Hub
-docker pull ${docker_hub_username}/python-app-2:${image_tag}
-docker run -d -p 5000:5000 --restart unless-stopped ${docker_hub_username}/python-app-2:${image_tag}
+docker pull ${docker_hub_username}/${docker_hub_repo}:${image_tag}
+docker run -d -p 5000:5000 --restart unless-stopped ${docker_hub_username}/${docker_hub_repo}:${image_tag}
