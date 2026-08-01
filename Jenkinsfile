@@ -68,19 +68,30 @@ pipeline {
         stage('Get URL') {
             steps {
                 script {
-                    dir('terraform') {
-                        def public_ip = sh(
-                            script: 'terraform output -raw public_ip',
-                            returnStdout: true
-                        ).trim()
-                        echo "========================================="
-                        echo "APPLICATION DEPLOYED!"
-                        echo "http://${public_ip}:5000"
-                        echo "========================================="
+
+                    withCredentials([
+                        aws(
+                            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                            credentialsId: 'aws-creds',
+                            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                        )
+                    ]) {
+
+                        dir('terraform') {
+
+                            def public_ip = sh(
+                                script: 'terraform output -raw public_ip',
+                                returnStdout: true
+                            ).trim()
+
+                            echo "========================================="
+                            echo "APPLICATION DEPLOYED!"
+                            echo "http://${public_ip}:5000"
+                            echo "========================================="
+                        }
                     }
                 }
             }
         }
-
     }
 }
