@@ -56,7 +56,7 @@ pipeline {
                         sh '''
                             terraform init
                             terraform apply -auto-approve \
-                                -var="docker_hub_username=${DOCKER_HUB_USER}" \
+                                -var="docker_hub_username=${DOCKERHUB_USER}" \
                                 -var="image_tag=${IMAGE_TAG}"
                         '''
                     }
