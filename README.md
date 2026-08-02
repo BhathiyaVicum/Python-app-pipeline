@@ -144,7 +144,7 @@ java -jar jenkins.war --httpPort=8080
 3. **Type:** `Pipeline`
 4. **Definition:** `Pipeline script from SCM`
 5. **SCM:** `Git`
-6. **Repository URL:** `https://github.com/BhathiyaVicum/python-app-pipeline.git`
+6. **Repository URL:** `https://github.com/Yourusername/python-app-pipeline.git`
 7. **Branch:** `main`
 8. **Script Path:** `Jenkinsfile`
 
