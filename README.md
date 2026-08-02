@@ -31,11 +31,9 @@ This project demonstrates a **fully automated CI/CD pipeline** that builds and d
 
 ## 📸 Screenshots
 
-<img width="1918" height="1012" alt="Jenkins Pipeline" src="https://github.com/user-attachments/assets/d66de0c5-a4ab-453d-a55d-8c1dc32d915d" />
+<img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/e43bff52-2c41-496f-8916-b9555c6d1092" />
 
-<img width="1918" height="1017" alt="Terraform Apply" src="https://github.com/user-attachments/assets/e9d2df0c-c5fe-4ab0-bf7b-eea88fa85458" />
-
-<img width="1918" height="1022" alt="Live Application" src="https://github.com/user-attachments/assets/c7aaf243-c08b-43eb-9fab-5376fe8914a6" />
+<img width="1918" height="966" alt="image" src="https://github.com/user-attachments/assets/680d89a1-3ec7-4a4f-81c2-15dd3354dc9e" />
 
 ## 📁 Project Structure
 
